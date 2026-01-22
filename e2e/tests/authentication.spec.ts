@@ -18,8 +18,14 @@ test.describe('Init', () => {
 
   })
 
+
+  test('Voir plus', async ({ page }) => {
+    await page.getByRole('button', { name: 'Voir plus' }).first().click()
+  })
+
   test('Connexion', async ({ page }) => {
     await expect(page.locator('path').nth(2)).toBeVisible()
+    await page.locator('#mantine-lqirqn6ml-target').getByRole('img').click();
     await page.getByRole('link', { name: 'Connection' }).click();
     await page.getByRole('textbox', { name: 'Email' }).click();
     await page.getByRole('textbox', { name: 'Email' }).fill('user1@test.fr')
