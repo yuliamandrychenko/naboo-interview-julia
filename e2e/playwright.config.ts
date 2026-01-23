@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test'
-import dotenv from 'dotenv'
+//import dotenv from 'dotenv'
 
-dotenv.config()
+//dotenv.config()
 
 export default defineConfig({
   testDir: './tests',
@@ -11,6 +11,7 @@ export default defineConfig({
       testMatch: '**/*.spec.ts',
       use: {
         baseURL: `http://localhost:3001`,
+        storageState: 'storageState.json',
         viewport: { width: 1920, height: 1080 },
         ignoreHTTPSErrors: true,
         bypassCSP: true,
