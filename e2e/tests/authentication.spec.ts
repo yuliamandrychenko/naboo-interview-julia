@@ -25,7 +25,7 @@ test.describe('Init', () => {
 
   test('Connexion', async ({ page }) => {
     await expect(page.locator('path').nth(2)).toBeVisible()
-    await page.locator('#mantine-lqirqn6ml-target').getByRole('img').click();
+    await page.locator('svg').first().click();
     await page.getByRole('link', { name: 'Connection' }).click();
     await page.getByRole('textbox', { name: 'Email' }).click();
     await page.getByRole('textbox', { name: 'Email' }).fill('user1@test.fr')
@@ -34,7 +34,7 @@ test.describe('Init', () => {
     await page.getByRole('button', { name: 'Valider' }).click();
     // verifify the successful login by checking for a user-specific element
     await expect(page.getByRole('link', { name: 'Mes activités' })).toBeVisible()
-    await page.locator('path').nth(1).click();
+    await page.locator('svg').first().click();;
     await expect(page.getByRole('link', { name: 'Déconnection' })).toBeVisible()
     
   })
