@@ -35,7 +35,7 @@ export default defineConfig({
 
   use: {
   baseURL: 'http://localhost:3001',
-  storageState: 'storageState.json',
+ storageState: 'storageState.json',
   trace: 'on-first-retry',
 },
 
