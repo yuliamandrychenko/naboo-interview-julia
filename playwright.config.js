@@ -29,9 +29,9 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 
 // Config global settings before each test run
-  globalSetup: require.resolve('./e2e/tests/auth.setup'),
+  globalSetup: require.resolve('./e2e/tests/globalSetup'),
   testMatch: '**/*.spec.ts',
-  testIgnore: '**/auth.setup.ts',
+  testIgnore: '**/globalSetup.ts',
 
   use: {
   baseURL: 'http://localhost:3001',
