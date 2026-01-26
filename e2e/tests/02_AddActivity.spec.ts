@@ -17,7 +17,7 @@ test('addActivityUAT', async ({ page }) => {
     await expect(page.getByText('Prix *')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Valider' })).toBeVisible();
     
-    // go to inital state + verification back button
+    // go to initial state + verification back button
     await page.getByRole('button').filter({ hasText: /^$/ }).click();
     await page.waitForURL('/discover');
     await page.getByRole('link', { name: 'Candidator' }).click();
@@ -53,7 +53,6 @@ test('addActivityUAT', async ({ page }) => {
     // go to inital state
     await page.waitForURL('/my-activities');
     await page.getByRole('link', { name: 'Candidator' }).click();
-    
     
   })
 
