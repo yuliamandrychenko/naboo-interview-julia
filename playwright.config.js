@@ -29,13 +29,15 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 
 // Config global settings before each test run
-  globalSetup: require.resolve('./e2e/tests/globalSetup'),
+  globalSetup: './e2e/tests/globalSetup.ts',
   testMatch: '**/*.spec.ts',
-  testIgnore: '**/globalSetup.ts',
+  globalTeardown: './e2e/tests/globalTeardown.ts',
+  testIgnore: ['**/globalSetup.ts', '**/globalTeardown.ts'],
+  
 
   use: {
   baseURL: 'http://localhost:3001',
- storageState: 'storageState.json',
+  storageState: 'storageState.json',
   trace: 'on-first-retry',
 },
 
