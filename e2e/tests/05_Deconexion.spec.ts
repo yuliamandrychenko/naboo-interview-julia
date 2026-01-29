@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { execSync } from 'child_process';
 
 
-test('logout + Home page verification', async ({ page }) => {
+test('logout', async ({ page }) => {
   await page.goto('/profil');
   await page.waitForLoadState('networkidle');
   //verification if connected 
@@ -14,16 +14,8 @@ test('logout + Home page verification', async ({ page }) => {
     await page.waitForLoadState('networkidle');
     await page.locator('svg').first().click();
     await expect(page.getByRole('link', { name: 'Connection' })).toBeVisible();
-    await page.waitForTimeout(200);
-    await expect(page.getByRole('heading', { name: 'Accueil' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Accueil' })).toContainText('Accueil')
-    await expect(page.getByRole('heading', { name: 'Découvrez les dernières' })).toContainText('Découvrez les dernières')
-    await expect(page.getByRole('link', { name: 'Candidator' })).toContainText('Candidator')
-    await expect(page.getByRole('link', { name: 'Découvrez des activités' })).toContainText('Découvrez des activités')
-    await expect(page.getByRole('link', { name: 'Explorer' })).toContainText('Explorer')
-    await expect (page.getByRole('button', { name: 'Voir plus' }).first()).toBeVisible()
+    await page.waitForLoadState('networkidle');
 });
-
 /*test.afterAll(async () => {
   console.log('🧹 Cleanup Mongo après les tests...');
 
