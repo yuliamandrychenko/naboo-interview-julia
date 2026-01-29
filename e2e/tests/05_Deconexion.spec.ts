@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test';
+import { execSync } from 'child_process';
+
 
 test('logout + Home page verification', async ({ page }) => {
   await page.goto('/profil');
@@ -8,19 +10,60 @@ test('logout + Home page verification', async ({ page }) => {
     await expect(page.getByRole('link', { name: 'Déconnection' })).toBeVisible()
   //deconnexion process
     await page.getByRole('link', { name: 'Déconnection' }).click();
-    //await page.waitForURL('/');
   //verification if deconnected
-    await page.waitForTimeout(500);
     await page.waitForLoadState('networkidle');
-    await page.locator('svg').first().click();;
+    await page.locator('svg').first().click();
     await expect(page.getByRole('link', { name: 'Connection' })).toBeVisible();
     await page.waitForTimeout(200);
-    await page.waitForLoadState('networkidle');
     await expect(page.getByRole('heading', { name: 'Accueil' })).toBeVisible();
-     await expect(page.getByRole('heading', { name: 'Accueil' })).toContainText('Accueil')
+    await expect(page.getByRole('heading', { name: 'Accueil' })).toContainText('Accueil')
     await expect(page.getByRole('heading', { name: 'Découvrez les dernières' })).toContainText('Découvrez les dernières')
     await expect(page.getByRole('link', { name: 'Candidator' })).toContainText('Candidator')
     await expect(page.getByRole('link', { name: 'Découvrez des activités' })).toContainText('Découvrez des activités')
     await expect(page.getByRole('link', { name: 'Explorer' })).toContainText('Explorer')
     await expect (page.getByRole('button', { name: 'Voir plus' }).first()).toBeVisible()
 });
+
+/*test.afterAll(async () => {
+  console.log('🧹 Cleanup Mongo après les tests...');
+
+  try {
+    // Try multiple possible commands
+    const commands = [
+      // Try with mongosh
+      `docker exec mongo mongosh naboo --eval "db.activities.deleteMany({ name: 'Test activity' })"`,
+      // Try with older mongo client
+      `docker exec mongo mongo naboo --eval "db.activities.deleteMany({ name: 'Test activity' })"`,
+      // Try with mongodb container name
+      `docker exec mongodb mongosh naboo --eval "db.activities.deleteMany({ name: 'Test activity' })"`,
+      // Try with naboo-mongodb container name
+      `docker exec naboo-mongodb mongosh naboo --eval "db.activities.deleteMany({ name: 'Test activity' })"`,
+    ];
+
+    let success = false;
+    for (const cmd of commands) {
+      try {
+        console.log(`Trying: ${cmd}`);
+        execSync(cmd, { stdio: 'pipe' });
+        console.log('✅ Cleanup completed');
+        success = true;
+        break;
+      } catch (e) {
+        // Continue to next command
+        continue;
+      }
+    }
+
+    if (!success) {
+      console.warn('⚠️ All cleanup attempts failed. Listing docker containers:');
+      try {
+        execSync('docker ps --format "{{.Names}}"', { stdio: 'inherit' });
+      } catch (e) {
+        console.warn('Could not list containers');
+      }
+    }
+  } catch (error) {
+    console.warn('⚠️ Cleanup error:', error.message);
+  }
+});
+*/

@@ -11,7 +11,8 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "mongodb": "^6.0.0"
   },
   "devDependencies": {
     "@playwright/test": "1.55.0",

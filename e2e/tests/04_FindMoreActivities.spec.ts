@@ -14,7 +14,7 @@ test('findMoreActivitiesSmoke', async ({ page }) => {
 
     // verification of add activity page from this page
     await page.getByRole('button', { name: 'Ajouter une activité' }).click();
-    await page.waitForLoadState('networkidle');
+   // await page.waitForLoadState('networkidle');
     await expect(page.getByRole('heading', { name: 'Ajouter une activité' })).toBeVisible();
     await expect(page.getByText('Nom de l\'activité *')).toBeVisible();
     await expect(page.getByText('Description *')).toBeVisible();

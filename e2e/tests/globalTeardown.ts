@@ -1,18 +1,25 @@
-import { execSync } from 'child_process';
+import { MongoClient } from 'mongodb';
 
-async function globalTeardown() {
-  console.log('Start to clean up test data in MongoDB...');
+export default async function globalTeardown() {
+  console.log('🧹 Global teardown: cleaning up database...');
+
+  const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/naboo';
+  let client = null;
 
   try {
-    execSync(`
-      docker exec -i mongo \
-      mongosh naboo --eval "db.Activity.deleteMany({name: "Test activity" }});"
-    `, { stdio: 'inherit' });
+    client = new MongoClient(mongoUri, { serverSelectionTimeoutMS: 5000 });
+    await client.connect();
 
-    console.log('Test data successfully deleted from MongoDB.');
-  } catch (err) {
-    console.error('Error cleaning up MongoDB:', err);
+    const db = client.db('naboo');
+    const activitiesCollection = db.collection('activities');
+
+    await activitiesCollection.deleteMany({ name: 'Test activity' });
+    console.log('✅ Cleanup completed');
+  } catch (error) {
+    console.error('❌ Error during cleanup:', error);
+  } finally {
+    if (client) {
+      await client.close();
+    }
   }
 }
-
-export default globalTeardown;

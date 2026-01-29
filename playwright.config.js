@@ -17,6 +17,12 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: 'e2e/tests',
   /* Run tests in files in parallel */
+  // Config global settings before each test run
+  globalSetup: require.resolve('./e2e/tests/globalSetup.ts'),
+  testMatch: '**/*.spec.ts',
+  globalTeardown: require.resolve('./e2e/tests/globalTeardown.ts'),
+  testIgnore: ['**/globalSetup.ts', '**/globalTeardown.ts'],
+
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
@@ -28,21 +34,18 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 
-// Config global settings before each test run
-  globalSetup: './e2e/tests/globalSetup.ts',
-  testMatch: '**/*.spec.ts',
-  globalTeardown: './e2e/tests/globalTeardown.ts',
-  testIgnore: ['**/globalSetup.ts', '**/globalTeardown.ts'],
-  
-
   use: {
   baseURL: 'http://localhost:3001',
   storageState: 'storageState.json',
   trace: 'on-first-retry',
 },
 
+  // Add timeout for global setup/teardown
+  timeout: 30000,
 /* Configure projects for major browsers */
   projects: [
+
+
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
