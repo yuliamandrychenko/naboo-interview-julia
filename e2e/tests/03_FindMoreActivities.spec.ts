@@ -5,6 +5,8 @@ test('findMoreActivitiesSmoke', async ({ page }) => {
     await page.goto('/discover');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(200);
+    // Verify the activity was created
+    await expect(page.getByText('Test activity').first()).toBeVisible({ timeout: 10000 });
     await expect(page.getByRole('button', { name: 'Ajouter une activité' })).toBeVisible()
 
     // verification of add activity page from this page

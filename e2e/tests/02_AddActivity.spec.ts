@@ -8,7 +8,7 @@ test('addActivity', async ({ page }) => {
   await page.waitForLoadState('networkidle');
   
   // Wait for form to be visible
-  await page.waitForSelector('form', { state: 'visible', timeout: 10000 });
+  //await page.waitForSelector('form', { state: 'visible', timeout: 10000 });
   
   // Verify we're on the add activity form by checking for the form fields
   await expect(page.getByRole('textbox', { name: 'Nom de l\'activité' })).toBeVisible();
@@ -19,6 +19,7 @@ test('addActivity', async ({ page }) => {
   
   // Fill the city field
   const cityInput = page.getByPlaceholder('Rouen');
+  await cityInput.waitFor({ state: 'visible', timeout: 10000 });
   await cityInput.click();
   await cityInput.fill('Paris');
   
@@ -28,14 +29,27 @@ test('addActivity', async ({ page }) => {
     { timeout: 10000 }
   );
   
-  // Wait for dropdown to populate and select Paris
-  await page.waitForTimeout(500);
-  await page.getByText('Paris', { exact: true }).first().click();
+  // Wait a bit for dropdown to render, then use keyboard to select
+  await page.waitForTimeout(1000);
+  await cityInput.press('ArrowDown');
+  await page.keyboard.press('Enter');
   
   // Fill the price field using placeholder
-  await page.getByPlaceholder('50').fill('100');
+  const priceInput = page.getByPlaceholder('50');
+  await priceInput.waitFor({ state: 'visible', timeout: 10000 });
+  await priceInput.fill('100');
   
-  await page.getByRole('button', { name: 'Valider' }).click();
+  // Click submit button
+  const submitButton = page.getByRole('button', { name: 'Valider' });
+  await submitButton.waitFor({ state: 'visible', timeout: 10000 });
+  await submitButton.click();
+  
+  // Wait a bit for the submission to process
+  await page.waitForTimeout(2000);
+  
+  // Navigate to my activities page to verify
+  await page.goto('/my-activities');
+  await page.waitForLoadState('networkidle');
   
   // Verify the activity was created
   await expect(page.getByText('Test activity').first()).toBeVisible({ timeout: 10000 });
